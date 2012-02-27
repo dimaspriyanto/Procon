@@ -1,15 +1,12 @@
 module Procon
   class Control
-    self.config = Struct.new(:pid_file_path, :log_file_path).new
-
     def initialize(command, options={})
-      @command, @options = command, options
-      process(@command)
+      @command = %w( start stop restart ).include?(command) ? command : 'start'
+      @options = options
     end
 
-    def process(param)
-      command = %w( start stop restart ).include?(param) ? param : 'start'
-      send(command)
+    def process
+      send(@command)
     end
 
     private
@@ -62,7 +59,7 @@ module Procon
     end
 
     def get_pid
-      pid_file_path = Procon::Control.config.pid_file_path || 'tmp/control.pid'
+      pid_file_path = Procon.config.pid_file_path || 'tmp/procon.pid'
       File.open(pid_file_path, 'r+') {|f| f.read }.to_i
     rescue
       return false
