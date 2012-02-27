@@ -6,7 +6,7 @@ module Procon
     @config ||= Struct.new(:pid_file_path, :log_file_path, :log_interval, :process_name).new
   end
 
-  def self.run(command, &block)
+  def self.run(command="", &block)
     Procon::Control.new(command).process
     pid = fork do
       block.call
