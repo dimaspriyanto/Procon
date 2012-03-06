@@ -49,7 +49,7 @@ module Procon
       pid = get_pid
       if pid
         begin
-          Process.kill(9, pid)
+          Process.kill("TERM", pid)
           puts "Process killed: #{pid}"
         rescue Exception => e
           puts "Failed to kill process: #{e.message}"
